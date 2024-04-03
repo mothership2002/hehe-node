@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const dynamicCore = require('./dynamicCore');
-const extension = '.json';
 
 // pagination?
 router.get('/all', (req, res) => {
