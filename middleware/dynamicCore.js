@@ -56,13 +56,12 @@ const createResource = (resource) => {
     const file = path.join(absolutePath, filename + extesion);
     const realResource = resourceObject[resource.geturl()];
     const resourceData = realResource === null || realResource === undefined ? resource : realResource.update(resource);
-
     fs.writeFile(file, resourceData.getJsonData(), encode, (err) => handlingError(err, filename));
     resourceObject[resource.geturl()] = resource;
 };
 
 const readResource = () => {
-
+    return JSON.stringify(Object.keys(resourceObject).map(key => resourceObject[key]));
 };
 
 const updateResource = (resource) => {
