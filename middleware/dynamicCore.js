@@ -9,6 +9,7 @@ const app = express();
 const isDebug = process.env.IS_DEBUG;
 const absolutePath = path.join(__dirname, '..', process.env.RESOURCE_DIRECTORY);
 const extesion = '.json';
+const encode = process.env.ENCODE;
 
 const Resource = require('../vo/Resource');
 
@@ -25,7 +26,8 @@ fs.readdir(absolutePath, (err, files) => {
             const resourceData = fs.readFileSync(resourcePath, 'utf8');
             try {
                 const obj = JSON.parse(resourceData);
-                const resource = new Resource(obj.url, obj.method, obj.content, obj.filename);
+                const resource = new Resource(obj.url, obj.filename);
+                resource.init(obj);
                 resourceObject[resource.getUrl()] = resource;
             } catch (error) {
                 console.log(error);
@@ -52,11 +54,14 @@ const handlingError = (error, filename) => {
 const createResource = (resource) => {
     const filename = resource.getFilename();
     const file = path.join(absolutePath, filename + extesion);
-    fs.writeFile(file, resource.getJsonData(), 'utf8', (err) => handlingError(err, filename));
+    const realResource = resourceObject[resource.geturl()];
+    const resourceData = realResource === null || realResource === undefined ? resource : realResource.update(resource);
+
+    fs.writeFile(file, resourceData.getJsonData(), encode, (err) => handlingError(err, filename));
     resourceObject[resource.geturl()] = resource;
 };
 
-const readResource = (resource) => {
+const readResource = () => {
 
 };
 

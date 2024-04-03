@@ -1,0 +1,11 @@
+POST http://localhost:2222/hello
+Content-Type: application/json
+
+{}
+
+##############################
+DELETE http://localhost:2222/hello2
+Content-Type: application/json
+
+{}
+

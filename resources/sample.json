@@ -1,8 +1,10 @@
 {
   "url": "/hello",
-  "method": "get",
   "filename": "sample",
-  "content" : {
+  "GET": {
     "hello": "world"
+  },
+  "POST": {
+    "id" : "1"
   }
 }
