@@ -20,7 +20,7 @@ class Resource {
     }
 
     getFilename() {
-        return thi.filename;
+        return this.filename;
     }
 
     getContent() {
@@ -37,3 +37,4 @@ class Resource {
     }
 
 }
+module.exports = Resource;

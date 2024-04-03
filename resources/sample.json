@@ -1,0 +1,8 @@
+{
+  "url": "/hello",
+  "method": "get",
+  "filename": "sample",
+  "content" : {
+    "hello": "world"
+  }
+}

@@ -1,10 +1,12 @@
 require('dotenv').config();
 
+const http = require('http');
 const express = require("express");
 const path = require('path');
 const fs = require('fs');
 const app = express();
 
+const isDebug = process.env.IS_DEBUG;
 const absolutePath = path.join(__dirname, '..', process.env.RESOURCE_DIRECTORY);
 const extesion = '.json';
 
@@ -26,26 +28,32 @@ fs.readdir(absolutePath, (err, files) => {
                 const resource = new Resource(obj.url, obj.method, obj.content, obj.filename);
                 resourceObject[resource.getUrl()] = resource;
             } catch (error) {
+                console.log(error);
                 console.error('file is not json format, check file.')
             }
         }
     });
+    if (isDebug) {
+        console.log('debug mode');
+        console.log('url list');
+        Object.keys(resourceObject).map(key => console.log(JSON.stringify(resourceObject[key].getJsonData())));
+        console.log('================================================')
+    }
 });
 
 const handlingError = (error, filename) => {
     if(err) {
         console.log(err);
     } else {
-        console.log('File written successfully {' + filename + '}');
+        console.log(`File written successfully : {${filename}}`);
     }
 }
 
-const createResource = (resouce) => {
-    const filename = resouce.getFilename();
+const createResource = (resource) => {
+    const filename = resource.getFilename();
     const file = path.join(absolutePath, filename + extesion);
-    fs.writeFile(file, resouce.getJsonData(), 'utf8', (err) => handlingError(err, filename));
-
-    resourceObject[resouce.geturl()] = resouce;
+    fs.writeFile(file, resource.getJsonData(), 'utf8', (err) => handlingError(err, filename));
+    resourceObject[resource.geturl()] = resource;
 };
 
 const readResource = (resource) => {
@@ -60,11 +68,10 @@ const deleteResource = (resource) => {
 
 };
 
-
 module.exports = {
     createResource,
     readResource,
     updateResource,
     deleteResource,
-    hello
+    resourceObject
 }

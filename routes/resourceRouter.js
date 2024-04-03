@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const dynamicCore = require('./dynamicCore');
+const dynamicCore = require('../middleware/dynamicCore');
 
 // pagination?
 router.get('/all', (req, res) => {
